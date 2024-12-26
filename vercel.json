@@ -1,0 +1,123 @@
+{
+    "version": 2,
+    "name": "referral-system",
+    "builds": [
+      {
+        "src": "index.js",
+        "use": "@vercel/node"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/api/auth/register",
+        "methods": ["POST"],
+        "dest": "index.js"
+      },
+      {
+        "src": "/api/auth/login",
+        "methods": ["POST"],
+        "dest": "index.js"
+      },
+      {
+        "src": "/api/referrals/tree",
+        "methods": ["GET"],
+        "dest": "index.js"
+      },
+      {
+        "src": "/api/referrals/earnings",
+        "methods": ["GET"],
+        "dest": "index.js"
+      },
+      {
+        "src": "/api/transactions",
+        "methods": ["POST"],
+        "dest": "index.js"
+      },
+      {
+        "src": "/api/analytics",
+        "methods": ["GET"],
+        "dest": "index.js"
+      },
+      {
+        "src": "/api/analytics/earnings-report",
+        "methods": ["GET"],
+        "dest": "index.js"
+      },
+      {
+        "src": "/socket.io/(.*)",
+        "dest": "index.js"
+      },
+      {
+        "src": "/(.*)",
+        "dest": "index.js"
+      }
+    ],
+    "env": {
+      "NODE_ENV": "production",
+      "MONGODB_URI": "@mongodb-uri",
+      "JWT_SECRET": "@jwt-secret",
+      "JWT_EXPIRES_IN": "7d",
+      "SOCKET_PORT": "8000",
+      "MAX_DIRECT_REFERRALS": "8",
+      "MIN_TRANSACTION_AMOUNT": "1000",
+      "DIRECT_REFERRAL_PERCENTAGE": "0.05",
+      "INDIRECT_REFERRAL_PERCENTAGE": "0.01"
+    },
+    "regions": ["bom1"],
+    "public": false,
+    "github": {
+      "enabled": true,
+      "silent": true
+    },
+    "headers": [
+      {
+        "source": "/api/(.*)",
+        "headers": [
+          {
+            "key": "Access-Control-Allow-Credentials",
+            "value": "true"
+          },
+          {
+            "key": "Access-Control-Allow-Origin",
+            "value": "*"
+          },
+          {
+            "key": "Access-Control-Allow-Methods",
+            "value": "GET,OPTIONS,PATCH,DELETE,POST,PUT"
+          },
+          {
+            "key": "Access-Control-Allow-Headers",
+            "value": "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization"
+          },
+          {
+            "key": "Cache-Control",
+            "value": "no-store, no-cache, must-revalidate, proxy-revalidate"
+          },
+          {
+            "key": "Pragma",
+            "value": "no-cache"
+          },
+          {
+            "key": "Expires",
+            "value": "0"
+          }
+        ]
+      }
+    ],
+    "functions": {
+      "index.js": {
+        "memory": 1024,
+        "maxDuration": 10
+      }
+    },
+    "crons": [
+      {
+        "path": "/api/cron/cleanup-pending-transactions",
+        "schedule": "0 0 * * *"
+      },
+      {
+        "path": "/api/cron/generate-daily-reports",
+        "schedule": "0 1 * * *"
+      }
+    ]
+  }
