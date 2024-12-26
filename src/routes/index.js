@@ -1,19 +1,25 @@
 import express from 'express';
-import {register, login, getReferralTree, getEarningStats} from '../controllers/userController.js';
-import {createTransaction} from '../controllers/transactionController.js';
-import {  getAnalytics, getEarningsReport   } from '../controllers/analyticsController.js';
-
-import {auth} from '../middleware/auth.js';
+import { register, login } from '../controllers/userController.js';
+import { createTransaction } from '../controllers/transactionController.js';
+import { getReferralTree, getEarningStats } from '../controllers/referralController.js';
+import { getAnalytics, getEarningsReport } from '../controllers/analyticsController.js';
+import { auth } from '../middleware/auth.js';
 
 const router = express.Router();
 
-router.post('/register', register);
-router.post('/login', login);
-router.get('/referral-tree', auth, getReferralTree);
-router.get('/earning-stats', auth, getEarningStats);
+// Auth Routes
+router.post('/auth/register', register);
+router.post('/auth/login', login);
 
-router.post('/transaction', auth, createTransaction);
+// Referral Routes
+router.get('/referrals/tree', auth, getReferralTree);
+router.get('/referrals/earnings', auth, getEarningStats);
+
+// Transaction Routes
+router.post('/transactions', auth, createTransaction);
+
+// Analytics Routes
 router.get('/analytics', auth, getAnalytics);
-router.get('/earnings-report', auth, getEarningsReport);
+router.get('/analytics/earnings-report', auth, getEarningsReport);
 
 export default router;

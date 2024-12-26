@@ -18,6 +18,23 @@ const transactionSchema = new mongoose.Schema({
     type: String,
     enum: ['pending', 'completed', 'failed'],
     default: 'pending'
+  },
+  purchaseDetails: {
+    items: [{
+      name: String,
+      quantity: Number,
+      price: Number
+    }],
+    totalAmount: Number
+  },
+  processingStatus: {
+    type: String,
+    enum: ['initiated', 'processing', 'earnings_calculated', 'completed', 'failed'],
+    default: 'initiated'
+  },
+  errorDetails: {
+    code: String,
+    message: String
   }
 }, {
   timestamps: true

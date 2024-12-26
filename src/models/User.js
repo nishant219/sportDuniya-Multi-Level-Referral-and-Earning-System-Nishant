@@ -35,7 +35,34 @@ const userSchema = new mongoose.Schema({
   totalEarnings: {
     type: Number,
     default: 0
-  }
+  },
+  isActive: {
+    type: Boolean,
+    default: true
+  },
+  level2Referrals: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }],
+  notifications: [{
+    type: {
+      type: String,
+      enum: ['earning', 'referral', 'system'],
+      required: true
+    },
+    message: {
+      type: String,
+      required: true
+    },
+    read: {
+      type: Boolean,
+      default: false
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now
+    }
+  }]
 }, {
   timestamps: true,
   toJSON: { virtuals: true },
@@ -53,6 +80,10 @@ userSchema.pre('save', async function(next) {
 
 userSchema.virtual('referralCount').get(function() {
   return this.directReferrals.length;
+});
+
+userSchema.virtual('totalReferralCount').get(function() {
+  return this.directReferrals.length + this.level2Referrals.length;
 });
 
 const User = mongoose.model('User', userSchema);
