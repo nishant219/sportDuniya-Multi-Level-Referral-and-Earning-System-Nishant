@@ -25,6 +25,14 @@ const limiter = rateLimit({
 
 app.use(limiter);
 
+//ping server
+app.get('/ping', (req, res) => {
+    res.status(200).json({
+      status: 'success',
+      message: 'pong'
+    });
+});
+
 app.use('/api', routes);
 
 app.use((err, req, res, next) => {
