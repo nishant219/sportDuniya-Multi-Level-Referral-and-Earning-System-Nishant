@@ -50,11 +50,6 @@ app.use((err, req, res, next) => {
     });
 });  
 
-// import userRoutes from './src/routes/userRoutes.js';
-// import authRoutes from './src/routes/authRoutes.js';
-// app.use('/api/v1/users', userRoutes);
-
-
 const startServer= async()=>{
     try{
         await connect();

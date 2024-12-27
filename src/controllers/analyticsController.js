@@ -1,6 +1,6 @@
 import Earning from '../models/Earning.js';
 import User from '../models/User.js';
-import Transaction from '../models/Transaction.js'; // Added missing import
+import Transaction from '../models/Transaction.js';
 import mongoose from 'mongoose';
 
 export const getAnalytics = async (req, res) => {
